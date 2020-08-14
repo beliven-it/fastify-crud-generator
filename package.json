@@ -1,0 +1,30 @@
+{
+  "name": "fastify-crud-generator",
+  "version": "0.0.1",
+  "description": "A plugin to rapidly generate CRUD routes for any entity",
+  "main": "crud.js",
+  "scripts": {
+    "test": "npx tap -Rspec --coverage test/**/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heply/fastify-crud-generator.git"
+  },
+  "keywords": [
+    "fastify",
+    "plugin",
+    "crud",
+    "generator",
+    "routes"
+  ],
+  "author": "Heply s.r.l.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/heply/fastify-crud-generator/issues"
+  },
+  "homepage": "https://github.com/heply/fastify-crud-generator#readme",
+  "devDependencies": {
+    "fastify": "^3.2.0",
+    "tap": "^14.10.8"
+  }
+}
