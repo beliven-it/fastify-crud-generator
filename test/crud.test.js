@@ -101,7 +101,7 @@ t.test('fastify-crud-generator', async t => {
       await fastify.register(require('../crud'), {
         prefix: '/products',
         repository: buildRepository(),
-        list: { handler },
+        list: { handler }
       })
       const res = await fastify.inject('/products')
       t.equal(res.payload, responseMsg, 'should use custom handler')
