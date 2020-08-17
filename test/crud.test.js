@@ -22,21 +22,19 @@ t.test('fastify-crud-generator', async t => {
     t.plan(1)
     const fastify = buildFastify(t)
     try {
-      await fastify
-        .register(require('../crud'), {
-          repository: buildRepository()
-        })
-        .after(() => {
-          const res = fastify.printRoutes()
-          const ref = `\
+      await fastify.register(require('../crud'), {
+        repository: buildRepository()
+      })
+      const res = fastify.printRoutes()
+      const ref = `\
 └── / (GET|POST)
     └── :id (DELETE)
         :id (GET)
         :id (PATCH)
 `
-          t.equal(res, ref, 'should have generated all routes in the root')
-        })
+      t.equal(res, ref, 'should have generated all routes in the root')
     } catch (err) {
+      console.log(err)
       t.error(err, 'should not throw any error')
     }
   })
@@ -45,14 +43,12 @@ t.test('fastify-crud-generator', async t => {
     t.plan(1)
     const fastify = buildFastify(t)
     try {
-      await fastify
-        .register(require('../crud'), {
-          prefix: '/products',
-          repository: buildRepository()
-        })
-        .after(() => {
-          const res = fastify.printRoutes()
-          const ref = `\
+      await fastify.register(require('../crud'), {
+        prefix: '/products',
+        repository: buildRepository()
+      })
+      const res = fastify.printRoutes()
+      const ref = `\
 └── /
     └── products (GET|POST)
         └── / (GET|POST)
@@ -60,9 +56,9 @@ t.test('fastify-crud-generator', async t => {
                 :id (GET)
                 :id (PATCH)
 `
-          t.equal(res, ref, 'should have generated all routes at the given prefix')
-        })
+      t.equal(res, ref, 'should have generated all routes at the given prefix')
     } catch (err) {
+      console.log(err)
       t.error(err, 'should not throw any error')
     }
   })
@@ -71,16 +67,14 @@ t.test('fastify-crud-generator', async t => {
     t.plan(1)
     const fastify = buildFastify(t)
     try {
-      await fastify
-        .register(require('../crud'), {
-          prefix: '/products',
-          repository: buildRepository(),
-          list: { url: '/list' },
-          create: { url: '/create' }
-        })
-        .after(() => {
-          const res = fastify.printRoutes()
-          const ref = `\
+      await fastify.register(require('../crud'), {
+        prefix: '/products',
+        repository: buildRepository(),
+        list: { url: '/list' },
+        create: { url: '/create' }
+      })
+      const res = fastify.printRoutes()
+      const ref = `\
 └── /
     └── products/
         ├── list (GET)
@@ -89,9 +83,30 @@ t.test('fastify-crud-generator', async t => {
             :id (GET)
             :id (PATCH)
 `
-          t.equal(res, ref, 'should have generated routes with custom URLs')
-        })
+      t.equal(res, ref, 'should have generated routes with custom URLs')
     } catch (err) {
+      console.log(err)
+      t.error(err, 'should not throw any error')
+    }
+  })
+
+  t.test('with custom route handler', async t => {
+    t.plan(1)
+    const fastify = buildFastify(t)
+    const responseMsg = 'ok'
+    const handler = async (req, reply) => {
+      return reply.send(responseMsg)
+    }
+    try {
+      await fastify.register(require('../crud'), {
+        prefix: '/products',
+        repository: buildRepository(),
+        list: { handler },
+      })
+      const res = await fastify.inject('/products')
+      t.equal(res.payload, responseMsg, 'should use custom handler')
+    } catch (err) {
+      console.log(err)
       t.error(err, 'should not throw any error')
     }
   })

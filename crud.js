@@ -8,7 +8,7 @@ const MissingRepositoryError = createError(
 )
 
 function crud (fastify, opts, next) {
-  if (!opts.repository) throw new MissingRepositoryError(opts.prefix || 'unknown prefix')
+  if (!opts.repository) throw new MissingRepositoryError(opts.prefix || '/')
 
   const routeOpts = {
     list: { url: '/', ...opts.list },
