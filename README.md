@@ -71,7 +71,7 @@ for the entity (*e.g. SQL, NoSQL, file storage, etc.*)
 }
 ```
 
-A `repository` object must implement the following methods:
+A `repository` object must implement the following interface:
 
 ```js
 {
@@ -83,7 +83,7 @@ A `repository` object must implement the following methods:
 }
 ```
 
-All methods accept a single argument `req`, which is the
+All methods accept a single `req` argument, which is the
 [original request object](https://www.fastify.io/docs/latest/Request/)
 catched by the route.
 
