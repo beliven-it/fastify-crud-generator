@@ -12,7 +12,7 @@ $ npm i --save fastify-crud-generator
 
 ```js
 fastify
-  .register(require('fastify-crud-generator), {
+  .register(require('fastify-crud-generator'), {
     prefix: '/products'
   })
   .after(() => console.log(fastify.printRoutes()))
