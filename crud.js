@@ -19,65 +19,45 @@ function crud (fastify, opts, next) {
   }
   const config = {
     ...opts,
-    ...routeOpts,
+    ...routeOpts
   }
 
   fastify.get(config.list.url, {
     handler: async (req, reply) => {
-      try {
-        const res = await config.repository.list(req)
-        reply.send(res)
-      } catch (err) {
-        throw err
-      }
+      const res = await config.repository.list(req)
+      reply.send(res)
     },
     ...config.list
   })
 
   fastify.post(config.create.url, {
     handler: async (req, reply) => {
-      try {
-        const res = await config.repository.create(req)
-        reply.send(res)
-      } catch (err) {
-        throw err
-      }
+      const res = await config.repository.create(req)
+      reply.send(res)
     },
     ...config.create
   })
 
   fastify.get(config.view.url, {
     handler: async (req, reply) => {
-      try {
-        const res = await config.repository.view(req)
-        reply.send(res)
-      } catch (err) {
-        throw err
-      }
+      const res = await config.repository.view(req)
+      reply.send(res)
     },
     ...config.view
   })
 
   fastify.patch(config.update.url, {
     handler: async (req, reply) => {
-      try {
-        const res = await config.repository.update(req)
-        reply.send(res)
-      } catch (err) {
-        throw err
-      }
+      const res = await config.repository.update(req)
+      reply.send(res)
     },
     ...config.update
   })
 
   fastify.delete(config.delete.url, {
     handler: async (req, reply) => {
-      try {
-        const res = await config.repository.delete(req)
-        reply.send(res)
-      } catch (err) {
-        throw err
-      }
+      const res = await config.repository.delete(req)
+      reply.send(res)
     },
     ...config.delete
   })
