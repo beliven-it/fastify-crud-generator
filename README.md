@@ -106,7 +106,7 @@ $ npm test
 
 This project is kindly sponsored by:
 
-[![heply](https://raw.githack.com/heply/brand/master/heply-logo.svg)](heply.it)
+[![heply](https://raw.githack.com/heply/brand/master/heply-logo.svg)](https://www.heply.it)
 
 ## License
 
