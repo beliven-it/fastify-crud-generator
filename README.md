@@ -102,6 +102,12 @@ Take a look at [the official documentation](https://www.fastify.io/docs/latest/R
 $ npm test
 ```
 
+## Acknowledgements
+
+This project is kindly sponsored by:
+
+[![heply](https://raw.githack.com/heply/brand/master/heply-logo.svg)](heply.it)
+
 ## License
 
 Licensed under [MIT](./LICENSE)
