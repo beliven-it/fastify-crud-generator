@@ -75,11 +75,11 @@ A `repository` object must implement the following interface:
 
 ```js
 {
-  list: (req) => { ... },
-  create: (req) => { ... },
-  view: (req) => { ... },
-  update: (req) => { ... },
-  delete: (req) => { ... }
+  list: async (req) => { ... },
+  create: async (req) => { ... },
+  view: async (req) => { ... },
+  update: async (req) => { ... },
+  delete: async (req) => { ... }
 }
 ```
 
