@@ -119,7 +119,11 @@ $ npm test
 
 ## Acknowledgements
 
-This project is kindly sponsored by:
+This project is inspired by:
+
+* [fastify-autocrud](https://www.npmjs.com/package/fastify-autocrud)
+
+And kindly sponsored by:
 
 [![heply](https://raw.githack.com/heply/brand/master/heply-logo.svg)](https://www.heply.it)
 
