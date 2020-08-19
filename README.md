@@ -18,6 +18,21 @@ fastify
   .after(() => console.log(fastify.printRoutes()))
 ```
 
+It can be registered as many times as you need, with different prefix:
+
+```js
+const crud = require('fastify-crud-generator')
+
+fastify
+  .register(crud, {
+    prefix: '/products'
+  })
+  .register(crud, {
+    prefix: '/orders'
+  })
+  .after(() => console.log(fastify.printRoutes()))
+```
+
 ## Options
 
 When registering the plugin in your app, you can pass
