@@ -35,6 +35,16 @@ fastify
   .after(() => console.log(fastify.printRoutes()))
 ```
 
+By default, the following routes will be registered:
+
+```
+GET /
+POST /
+GET /:id
+PATCH /:id
+DELETE /:id
+```
+
 ## Options
 
 When registering the plugin in your app, you can pass
