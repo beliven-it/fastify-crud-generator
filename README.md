@@ -38,11 +38,11 @@ fastify
 By default, the following routes will be registered:
 
 ```
-GET /
-POST /
-GET /:id
-PATCH /:id
-DELETE /:id
+GET    (prefix)/
+POST   (prefix)/
+GET    (prefix)/:id
+PATCH  (prefix)/:id
+DELETE (prefix)/:id
 ```
 
 ## Options
