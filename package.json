@@ -31,7 +31,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^5.0.0",
     "fastify": "^3.2.1",
-    "tap": "^14.10.8"
+    "tap": "^15.0.1"
   },
   "dependencies": {
     "fastify-error": "^0.3.0"
