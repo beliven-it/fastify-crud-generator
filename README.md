@@ -114,7 +114,7 @@ A `controller` object must implement the following interface:
 }
 ```
 
-All methods accept a `req / reply` argument apir, which are the original
+All methods accept a `req / reply` argument pair, which are the original
 [request](https://www.fastify.io/docs/latest/Request/) and
 [reply](https://www.fastify.io/docs/latest/Reply/) objects
 passed to the route.
