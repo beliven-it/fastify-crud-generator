@@ -7,7 +7,7 @@ function buildFastify (t) {
   return fastify
 }
 
-function buildRepository (mocks = {}) {
+function buildController (mocks = {}) {
   return {
     list: async () => mocks.list || [],
     create: async () => mocks.create || {},
@@ -18,7 +18,7 @@ function buildRepository (mocks = {}) {
 }
 
 t.test('fastify-crud-generator', async t => {
-  t.test('without a repository', async t => {
+  t.test('without a controller', async t => {
     t.plan(1)
     const fastify = buildFastify(t)
     try {
@@ -33,14 +33,15 @@ t.test('fastify-crud-generator', async t => {
     const fastify = buildFastify(t)
     try {
       await fastify.register(require('../crud'), {
-        repository: buildRepository()
+        controller: buildController()
       })
       const res = fastify.printRoutes()
       const ref = `\
-└── / (GET|POST)
-    └── :id (DELETE)
-        :id (GET)
+└── / (GET)
+    / (POST)
+    └── :id (GET)
         :id (PATCH)
+        :id (DELETE)
 `
       t.equal(res, ref, 'should have generated all routes in the root')
     } catch (err) {
@@ -55,16 +56,18 @@ t.test('fastify-crud-generator', async t => {
     try {
       await fastify.register(require('../crud'), {
         prefix: '/products',
-        repository: buildRepository()
+        controller: buildController()
       })
       const res = fastify.printRoutes()
       const ref = `\
 └── /
-    └── products (GET|POST)
-        └── / (GET|POST)
-            └── :id (DELETE)
-                :id (GET)
+    └── products (GET)
+        products (POST)
+        └── / (GET)
+            / (POST)
+            └── :id (GET)
                 :id (PATCH)
+                :id (DELETE)
 `
       t.equal(res, ref, 'should have generated all routes at the given prefix')
     } catch (err) {
@@ -79,19 +82,19 @@ t.test('fastify-crud-generator', async t => {
     try {
       await fastify.register(require('../crud'), {
         prefix: '/products',
-        repository: buildRepository(),
+        controller: buildController(),
         list: { url: '/list' },
         create: { url: '/create' }
       })
       const res = fastify.printRoutes()
       const ref = `\
-└── /
-    └── products/
-        ├── list (GET)
-        ├── create (POST)
-        └── :id (DELETE)
-            :id (GET)
-            :id (PATCH)
+└── /products
+    ├── /
+    │   ├── list (GET)
+    │   └── :id (GET)
+    │       :id (PATCH)
+    │       :id (DELETE)
+    └── /create (POST)
 `
       t.equal(res, ref, 'should have generated routes with custom URLs')
     } catch (err) {
@@ -110,7 +113,7 @@ t.test('fastify-crud-generator', async t => {
     try {
       await fastify.register(require('../crud'), {
         prefix: '/products',
-        repository: buildRepository(),
+        controller: buildController(),
         list: { handler }
       })
       const res = await fastify.inject({
@@ -131,14 +134,14 @@ t.test('fastify-crud-generator', async t => {
         list: [{ id: 1 }]
       }
       await fastify.register(require('../crud'), {
-        repository: buildRepository(mocks)
+        controller: buildController(mocks)
       })
       const res = await fastify.inject({
         url: '/'
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.same(payload, mocks.list, 'should invoke the repository "list" method')
+      t.same(payload, mocks.list, 'should invoke the controller "list" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -153,7 +156,7 @@ t.test('fastify-crud-generator', async t => {
         create: { id: 1 }
       }
       await fastify.register(require('../crud'), {
-        repository: buildRepository(mocks)
+        controller: buildController(mocks)
       })
       const res = await fastify.inject({
         url: '/',
@@ -162,7 +165,7 @@ t.test('fastify-crud-generator', async t => {
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.same(payload, mocks.create, 'should invoke the repository "create" method')
+      t.same(payload, mocks.create, 'should invoke the controller "create" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -177,14 +180,14 @@ t.test('fastify-crud-generator', async t => {
         view: { id: 1 }
       }
       await fastify.register(require('../crud'), {
-        repository: buildRepository(mocks)
+        controller: buildController(mocks)
       })
       const res = await fastify.inject({
         url: `/${mocks.view.id}`
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.deepEqual(payload, mocks.view, 'should invoke the repository "view" method')
+      t.deepEqual(payload, mocks.view, 'should invoke the controller "view" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -199,7 +202,7 @@ t.test('fastify-crud-generator', async t => {
         update: { id: 1 }
       }
       await fastify.register(require('../crud'), {
-        repository: buildRepository(mocks)
+        controller: buildController(mocks)
       })
       const res = await fastify.inject({
         url: `/${mocks.update.id}`,
@@ -208,7 +211,7 @@ t.test('fastify-crud-generator', async t => {
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.deepEqual(payload, mocks.update, 'should invoke the repository "update" method')
+      t.deepEqual(payload, mocks.update, 'should invoke the controller "update" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -223,7 +226,7 @@ t.test('fastify-crud-generator', async t => {
         delete: { id: 1 }
       }
       await fastify.register(require('../crud'), {
-        repository: buildRepository(mocks)
+        controller: buildController(mocks)
       })
       const res = await fastify.inject({
         url: `/${mocks.delete.id}`,
@@ -231,7 +234,7 @@ t.test('fastify-crud-generator', async t => {
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.deepEqual(payload, mocks.delete, 'should invoke the repository "delete" method')
+      t.deepEqual(payload, mocks.delete, 'should invoke the controller "delete" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -244,25 +247,29 @@ t.test('fastify-crud-generator', async t => {
     try {
       await fastify.register(require('../crud'), {
         prefix: '/products',
-        repository: buildRepository()
+        controller: buildController()
       })
       await fastify.register(require('../crud'), {
         prefix: '/orders',
-        repository: buildRepository()
+        controller: buildController()
       })
       const res = fastify.printRoutes()
       const ref = `\
 └── /
-    ├── products (GET|POST)
-    │   └── / (GET|POST)
-    │       └── :id (DELETE)
-    │           :id (GET)
+    ├── products (GET)
+    │   products (POST)
+    │   └── / (GET)
+    │       / (POST)
+    │       └── :id (GET)
     │           :id (PATCH)
-    └── orders (GET|POST)
-        └── / (GET|POST)
-            └── :id (DELETE)
-                :id (GET)
+    │           :id (DELETE)
+    └── orders (GET)
+        orders (POST)
+        └── / (GET)
+            / (POST)
+            └── :id (GET)
                 :id (PATCH)
+                :id (DELETE)
 `
       t.equal(res, ref, 'should have generated all routes for both prefixes')
     } catch (err) {
