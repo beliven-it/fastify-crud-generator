@@ -7,7 +7,7 @@ A plugin to rapidly generate CRUD routes for any entity
 ## Install
 
 ```bash
-$ npm i --save fastify-crud-generator
+npm i --save fastify-crud-generator
 ```
 
 ## Usage
@@ -15,7 +15,8 @@ $ npm i --save fastify-crud-generator
 ```js
 fastify
   .register(require('fastify-crud-generator'), {
-    prefix: '/products'
+    prefix: '/products',
+    controller: ...
   })
   .after(() => console.log(fastify.printRoutes()))
 ```
@@ -27,10 +28,12 @@ const crud = require('fastify-crud-generator')
 
 fastify
   .register(crud, {
-    prefix: '/products'
+    prefix: '/products',
+    controller: ...
   })
   .register(crud, {
-    prefix: '/orders'
+    prefix: '/orders',
+    controller: ...
   })
   .after(() => console.log(fastify.printRoutes()))
 ```
@@ -53,7 +56,7 @@ the following options to fine-tuning the CRUD routes generation:
 | Name                | Description                                                         |
 |---------------------|---------------------------------------------------------------------|
 | `prefix`            | Add a prefix to all generated routes.                               |
-| `repository`        | (MANDATORY) A repository object to access the underline data layer. |
+| `controller`        | (MANDATORY) A controller object providing handlers for each route.  |
 | `list`              | Route options for **list** action.                                  |
 | `create`            | Route options for **create** action.                                |
 | `view`              | Route options for **view** action.                                  |
@@ -81,52 +84,53 @@ The `prefix` option can also be used to define API version for the generated rou
 
 **NOTE:** if no `prefix` is specified, all routes will be added at the root level.
 
-### Repository
+### Controller
 
 This is the only **mandatory** option during the plugin registration.
 
-A `repository` object is the data layer the generator will use to implement
-the classic CRUD actions on the entity (list, create, view, update, delete).
+A `controller` object provides the route handlers used to implement the classic
+CRUD actions for the registered entity (list, create, view, update, delete).
 
-Passing an external `repository` object permits to use any kind of data layer
-for the entity (*e.g. SQL, NoSQL, file storage, etc.*)
+Passing an external `controller` object allows the maximum flexibility in terms
+of business logic and underlying data layer for any entity (*e.g. SQL, NoSQL,
+file storage, etc.*)
 
 ```js
 {
   prefix: '/products',
-  repository: productRepository
+  controller: productController
 }
 ```
 
-A `repository` object must implement the following interface:
+A `controller` object must implement the following interface:
 
 ```js
 {
-  list: async (req) => { ... },
-  create: async (req) => { ... },
-  view: async (req) => { ... },
-  update: async (req) => { ... },
-  delete: async (req) => { ... }
+  list: async (req, reply) => { ... },
+  create: async (req, reply) => { ... },
+  view: async (req, reply) => { ... },
+  update: async (req, reply) => { ... },
+  delete: async (req, reply) => { ... }
 }
 ```
 
-All methods accept a single `req` argument, which is the
-[original request object](https://www.fastify.io/docs/latest/Request/)
-catched by the route.
-
-You can find more info about the **repository pattern** [here](https://medium.com/@pererikbergman/repository-design-pattern-e28c0f3e4a30).
+All methods accept a `req / reply` argument pair, which are the original
+[request](https://www.fastify.io/docs/latest/Request/) and
+[reply](https://www.fastify.io/docs/latest/Reply/) objects
+passed to the route.
 
 ### Route options
 
 The `list`, `create`, `view`, `update` and `delete` options allow to fine tune
 the generated routes according to the available configuration provided by Fastify.
 
-Take a look at [the official documentation](https://www.fastify.io/docs/latest/Routes/#routes-option) for more details.
+Take a look at the [official documentation](https://www.fastify.io/docs/latest/Routes/#routes-option)
+for more details.
 
 ## Test
 
 ```bash
-$ npm test
+npm test
 ```
 
 ## Acknowledgements

@@ -2,14 +2,14 @@
 
 const createError = require('fastify-error')
 
-const MissingRepositoryError = createError(
-  'FST_MISSING_CRUD_REPOSITORY',
-  'Missing CRUD repository for %s'
+const MissingControllerError = createError(
+  'ERR_MISSING_CRUD_CONTROLLER',
+  'Missing CRUD controller for %s'
 )
 
 function crud (fastify, opts, next) {
-  if (!opts.repository) {
-    return next(new MissingRepositoryError(opts.prefix || '/'))
+  if (!opts.controller) {
+    return next(new MissingControllerError(opts.prefix || '/'))
   }
 
   const routeOpts = {
@@ -26,40 +26,35 @@ function crud (fastify, opts, next) {
 
   fastify.get(config.list.url, {
     handler: async (req, reply) => {
-      const res = await config.repository.list(req)
-      reply.send(res)
+      return config.controller.list(req, reply)
     },
     ...config.list
   })
 
   fastify.post(config.create.url, {
     handler: async (req, reply) => {
-      const res = await config.repository.create(req)
-      reply.send(res)
+      return config.controller.create(req, reply)
     },
     ...config.create
   })
 
   fastify.get(config.view.url, {
     handler: async (req, reply) => {
-      const res = await config.repository.view(req)
-      reply.send(res)
+      return config.controller.view(req, reply)
     },
     ...config.view
   })
 
   fastify.patch(config.update.url, {
     handler: async (req, reply) => {
-      const res = await config.repository.update(req)
-      reply.send(res)
+      return config.controller.update(req, reply)
     },
     ...config.update
   })
 
   fastify.delete(config.delete.url, {
     handler: async (req, reply) => {
-      const res = await config.repository.delete(req)
-      reply.send(res)
+      return config.controller.delete(req, reply)
     },
     ...config.delete
   })
