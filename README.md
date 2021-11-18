@@ -124,7 +124,7 @@ passed to the route.
 The `list`, `create`, `view`, `update` and `delete` options allow to fine tune
 the generated routes according to the available configuration provided by Fastify.
 
-Take a look at the [official documentation](https://www.fastify.io/docs/latest/Routes/#routes-option)
+Take a look at the [official documentation](https://www.fastify.io/docs/latest/Routes/#options)
 for more details.
 
 ## Test
