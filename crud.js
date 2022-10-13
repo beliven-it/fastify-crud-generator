@@ -1,6 +1,6 @@
 'use strict'
 
-const createError = require('fastify-error')
+const createError = require('@fastify/error')
 
 const MissingControllerError = createError(
   'ERR_MISSING_CRUD_CONTROLLER',

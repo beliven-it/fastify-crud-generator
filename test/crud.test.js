@@ -3,7 +3,7 @@ const Fastify = require('fastify')
 
 function buildFastify (t) {
   const fastify = Fastify({ logger: false })
-  t.tearDown(() => fastify.close())
+  t.teardown(() => fastify.close())
   return fastify
 }
 
@@ -24,7 +24,7 @@ t.test('fastify-crud-generator', async t => {
     try {
       await fastify.register(require('../crud'))
     } catch (err) {
-      t.true(err, 'should throw an error')
+      t.ok(err, 'should throw an error')
     }
   })
 
@@ -187,7 +187,7 @@ t.test('fastify-crud-generator', async t => {
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.deepEqual(payload, mocks.view, 'should invoke the controller "view" method')
+      t.same(payload, mocks.view, 'should invoke the controller "view" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -211,7 +211,7 @@ t.test('fastify-crud-generator', async t => {
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.deepEqual(payload, mocks.update, 'should invoke the controller "update" method')
+      t.same(payload, mocks.update, 'should invoke the controller "update" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
@@ -234,7 +234,7 @@ t.test('fastify-crud-generator', async t => {
       })
       t.equal(res.statusCode, 200, 'should return 200')
       const payload = JSON.parse(res.payload)
-      t.deepEqual(payload, mocks.delete, 'should invoke the controller "delete" method')
+      t.same(payload, mocks.delete, 'should invoke the controller "delete" method')
     } catch (err) {
       console.log(err)
       t.error(err, 'should not throw any error')
