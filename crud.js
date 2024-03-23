@@ -9,9 +9,8 @@ const MissingControllerError = createError(
 
 function crud (fastify, opts, next) {
   const { controller } = opts
-  if (!controller) return next(new MissingControllerError(opts.prefix || '/'))
 
-  const { list, create, view, update, delete: del } = controller
+  if (!controller) return next(new MissingControllerError(opts.prefix || '/'))
 
   const config = {
     ...opts,
@@ -22,37 +21,37 @@ function crud (fastify, opts, next) {
     delete: { url: '/:id', ...opts.delete }
   }
 
-  if (list) {
+  if (controller.list) {
     fastify.get(config.list.url, {
-      handler: list,
+      handler: controller.list,
       ...config.list
     })
   }
 
-  if (create) {
+  if (controller.create) {
     fastify.post(config.create.url, {
-      handler: create,
+      handler: controller.create,
       ...config.create
     })
   }
 
-  if (view) {
+  if (controller.view) {
     fastify.get(config.view.url, {
-      handler: view,
+      handler: controller.view,
       ...config.view
     })
   }
 
-  if (update) {
+  if (controller.update) {
     fastify.patch(config.update.url, {
-      handler: update,
+      handler: controller.update,
       ...config.update
     })
   }
 
-  if (del) {
+  if (controller.delete) {
     fastify.delete(config.delete.url, {
-      handler: del,
+      handler: controller.delete,
       ...config.delete
     })
   }
