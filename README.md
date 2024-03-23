@@ -2,7 +2,7 @@
 
 A plugin to rapidly generate CRUD routes for any entity
 
-![Node.js CI](https://github.com/heply/fastify-crud-generator/workflows/Node.js%20CI/badge.svg?branch=master)
+![Node.js CI](https://github.com/beliven-it/fastify-crud-generator/workflows/Node.js%20CI/badge.svg?branch=master)
 
 ## Install
 
