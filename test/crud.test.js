@@ -260,4 +260,29 @@ t.test('fastify-crud-generator', async t => {
       t.error(err, 'should not throw any error')
     }
   })
+
+  t.test('registering only some routes', async t => {
+    t.plan(1)
+    const fastify = buildFastify(t)
+    try {
+      await fastify.register(require('../crud'), {
+        prefix: '/products',
+        controller: {
+          create (req, reply) {
+            return reply.send('create')
+          }
+        }
+      })
+      const res = fastify.printRoutes()
+      const ref = `\
+└── /
+    └── products (POST)
+        └── / (POST)
+`
+      t.equal(res, ref, 'should have generated only implements routes at the given prefix')
+    } catch (err) {
+      console.log(err)
+      t.error(err, 'should not throw any error')
+    }
+  })
 })
