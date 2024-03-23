@@ -4,7 +4,7 @@
   "description": "A plugin to rapidly generate CRUD routes for any entity",
   "main": "crud.js",
   "scripts": {
-    "test": "npx tap -Rspec --coverage test/**/*.test.js"
+    "test": "npx tap -Rspec test/**/*.test.js"
   },
   "repository": {
     "type": "git",
@@ -24,16 +24,16 @@
   },
   "homepage": "https://github.com/beliven-it/fastify-crud-generator#readme",
   "devDependencies": {
-    "eslint": "^7.7.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.0",
+    "eslint": "^8.51.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-standard": "^5.0.0",
-    "fastify": "^3.22.1",
-    "tap": "^16.0.0"
+    "fastify": "^4.24.0",
+    "tap": "^18.5.0"
   },
   "dependencies": {
-    "@fastify/error": "^2.0.0"
+    "@fastify/error": "^3.4.0"
   }
 }

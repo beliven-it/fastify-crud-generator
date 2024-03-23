@@ -8,56 +8,54 @@ const MissingControllerError = createError(
 )
 
 function crud (fastify, opts, next) {
-  if (!opts.controller) {
-    return next(new MissingControllerError(opts.prefix || '/'))
-  }
+  const { controller } = opts
+  if (!controller) return next(new MissingControllerError(opts.prefix || '/'))
 
-  const routeOpts = {
+  const { list, create, view, update, delete: del } = controller
+
+  const config = {
+    ...opts,
     list: { url: '/', ...opts.list },
     create: { url: '/', ...opts.create },
     view: { url: '/:id', ...opts.view },
     update: { url: '/:id', ...opts.update },
     delete: { url: '/:id', ...opts.delete }
   }
-  const config = {
-    ...opts,
-    ...routeOpts
+
+  if (list) {
+    fastify.get(config.list.url, {
+      handler: list,
+      ...config.list
+    })
   }
 
-  fastify.get(config.list.url, {
-    handler: async (req, reply) => {
-      return config.controller.list(req, reply)
-    },
-    ...config.list
-  })
+  if (create) {
+    fastify.post(config.create.url, {
+      handler: create,
+      ...config.create
+    })
+  }
 
-  fastify.post(config.create.url, {
-    handler: async (req, reply) => {
-      return config.controller.create(req, reply)
-    },
-    ...config.create
-  })
+  if (view) {
+    fastify.get(config.view.url, {
+      handler: view,
+      ...config.view
+    })
+  }
 
-  fastify.get(config.view.url, {
-    handler: async (req, reply) => {
-      return config.controller.view(req, reply)
-    },
-    ...config.view
-  })
+  if (update) {
+    fastify.patch(config.update.url, {
+      handler: update,
+      ...config.update
+    })
+  }
 
-  fastify.patch(config.update.url, {
-    handler: async (req, reply) => {
-      return config.controller.update(req, reply)
-    },
-    ...config.update
-  })
-
-  fastify.delete(config.delete.url, {
-    handler: async (req, reply) => {
-      return config.controller.delete(req, reply)
-    },
-    ...config.delete
-  })
+  if (del) {
+    fastify.delete(config.delete.url, {
+      handler: del,
+      ...config.delete
+    })
+  }
 
   next()
 }

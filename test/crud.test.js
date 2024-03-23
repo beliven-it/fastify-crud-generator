@@ -37,11 +37,8 @@ t.test('fastify-crud-generator', async t => {
       })
       const res = fastify.printRoutes()
       const ref = `\
-└── / (GET)
-    / (POST)
-    └── :id (GET)
-        :id (PATCH)
-        :id (DELETE)
+└── / (GET, HEAD, POST)
+    └── :id (GET, HEAD, PATCH, DELETE)
 `
       t.equal(res, ref, 'should have generated all routes in the root')
     } catch (err) {
@@ -61,13 +58,9 @@ t.test('fastify-crud-generator', async t => {
       const res = fastify.printRoutes()
       const ref = `\
 └── /
-    └── products (GET)
-        products (POST)
-        └── / (GET)
-            / (POST)
-            └── :id (GET)
-                :id (PATCH)
-                :id (DELETE)
+    └── products (GET, HEAD, POST)
+        └── / (GET, HEAD, POST)
+            └── :id (GET, HEAD, PATCH, DELETE)
 `
       t.equal(res, ref, 'should have generated all routes at the given prefix')
     } catch (err) {
@@ -88,13 +81,11 @@ t.test('fastify-crud-generator', async t => {
       })
       const res = fastify.printRoutes()
       const ref = `\
-└── /products
-    ├── /
-    │   ├── list (GET)
-    │   └── :id (GET)
-    │       :id (PATCH)
-    │       :id (DELETE)
-    └── /create (POST)
+└── /
+    └── products/
+        ├── list (GET, HEAD)
+        ├── create (POST)
+        └── :id (GET, HEAD, PATCH, DELETE)
 `
       t.equal(res, ref, 'should have generated routes with custom URLs')
     } catch (err) {
@@ -256,20 +247,12 @@ t.test('fastify-crud-generator', async t => {
       const res = fastify.printRoutes()
       const ref = `\
 └── /
-    ├── products (GET)
-    │   products (POST)
-    │   └── / (GET)
-    │       / (POST)
-    │       └── :id (GET)
-    │           :id (PATCH)
-    │           :id (DELETE)
-    └── orders (GET)
-        orders (POST)
-        └── / (GET)
-            / (POST)
-            └── :id (GET)
-                :id (PATCH)
-                :id (DELETE)
+    ├── products (GET, HEAD, POST)
+    │   └── / (GET, HEAD, POST)
+    │       └── :id (GET, HEAD, PATCH, DELETE)
+    └── orders (GET, HEAD, POST)
+        └── / (GET, HEAD, POST)
+            └── :id (GET, HEAD, PATCH, DELETE)
 `
       t.equal(res, ref, 'should have generated all routes for both prefixes')
     } catch (err) {
