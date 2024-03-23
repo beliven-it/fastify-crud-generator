@@ -4,7 +4,7 @@
   "description": "A plugin to rapidly generate CRUD routes for any entity",
   "main": "crud.js",
   "scripts": {
-    "test": "npx tap -Rspec test/**/*.test.js"
+    "test": "npx tap test/**/*.test.js"
   },
   "repository": {
     "type": "git",
