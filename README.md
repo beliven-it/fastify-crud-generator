@@ -38,7 +38,7 @@ fastify
   .after(() => console.log(fastify.printRoutes()))
 ```
 
-By default, the following routes will be registered:
+By default, the following routes are supported:
 
 ```
 GET    (prefix)/
@@ -102,7 +102,7 @@ file storage, etc.*)
 }
 ```
 
-A `controller` object must implement the following interface:
+A `controller` object should implement the following interface:
 
 ```js
 {
@@ -113,6 +113,12 @@ A `controller` object must implement the following interface:
   delete: async (req, reply) => { ... }
 }
 ```
+
+Please note you're not forced to implement all supported methods: you can choose
+to implement only those needed by your resource.
+
+Not implementing a method of the interface will automatically disable the
+corresponding route.
 
 All methods accept a `req / reply` argument pair, which are the original
 [request](https://www.fastify.io/docs/latest/Request/) and
