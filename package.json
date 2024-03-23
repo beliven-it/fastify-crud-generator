@@ -1,6 +1,6 @@
 {
   "name": "fastify-crud-generator",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A plugin to rapidly generate CRUD routes for any entity",
   "main": "crud.js",
   "scripts": {
