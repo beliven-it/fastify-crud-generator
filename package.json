@@ -34,6 +34,6 @@
     "tap": "^19.2.5"
   },
   "dependencies": {
-    "@fastify/error": "^3.4.0"
+    "@fastify/error": "^4.0.0"
   }
 }
